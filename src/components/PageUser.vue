@@ -23,7 +23,7 @@
 					</th>
 				</tr>
 				<tr v-for="(item, index) in getArray" :key="index">
-					<td v-for="(cols, index) in item" :key="index" @click="showModalEvent(item)">
+					<td v-for="(cols, index) in item" :key="index" @click="$emit('emit-table',item) ">
 						<span>{{cols}}</span>
 					</td>
 				</tr>
@@ -55,19 +55,15 @@
 					</div>
 				</div>
 			</div>
-			<modalWindow v-if="showModal" :selectElement="selectElement" @emit-modal="showModal=$event"/>
 		</div>
 	</section>
 </template>
 
 <script>
-import modalWindow from './modalWindow';
+
 
 export default {
 	name: 'PageUser',
-	components: {
-		modalWindow
-	},
 	props:['arrayData'],
 	data(){
 		return {
@@ -76,7 +72,6 @@ export default {
 				key:null,
 				value:null
 			},
-			showModal:false,
 			searchValue:null,
 			inputSearchValue: null,
 			selectElement:null,
@@ -125,14 +120,8 @@ export default {
 				const mod = arrayLength%this.countCoolsForPage
 				this.totalPagePagin = mod != 0? ((arrayLength-mod)/this.countCoolsForPage)+1:arrayLength/this.countCoolsForPage;
 			}
-			console.log(this.totalPagePagin);
-
 		},
-		showModalEvent: function(el){
-			let {fullname,email} = {...el};
-			this.selectElement = {fullname,email};
-			this.showModal = true;
-		},	
+	
 	}
 	
 }
