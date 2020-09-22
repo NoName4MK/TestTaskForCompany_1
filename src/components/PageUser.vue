@@ -6,10 +6,7 @@
 				<input type="button" value="Найти" @click="searchValue=inputSearchValue">
 				<input type="button"  value="Очистить" @click="searchValue=null">
 			</div>
-			<div v-if="getArray.length==0">
-				<span>По запросу "{{searchValue}}" нет данных.</span>
-			</div>
-			<div v-else>
+			<div v-if="getArray.length!=0">
 				<table >
 					<tr>
 						<th  v-for="(value,name, index) in getArray[0]" :key="index">
@@ -60,6 +57,9 @@
 					</div>
 				</div>
 			</div>
+			<div v-else>
+				<span>По запросу "{{searchValue}}" нет данных.</span>
+			</div>
 		</div>
 	</section>
 </template>
@@ -88,9 +88,10 @@ export default {
 	computed :{
 		getArray: function () {
 	
-			let array = this.arrayData;
+			let array = [...this.arrayData];
 			if(this.searchValue){
 				array = array.filter(item => Object.values(item).find(item => item==this.searchValue));			
+				this.defaultSettings();
 			}
 
 			this.setPagination(array.length);
@@ -125,6 +126,12 @@ export default {
 				this.totalPagePagin = mod != 0? ((arrayLength-mod)/this.countCoolsForPage)+1:arrayLength/this.countCoolsForPage;
 			}
 		},
+		defaultSettings: function(){
+			this.pagePagin=1;
+			this.elSort.key=null;
+			this.elSort.value=false;
+
+		}
 	
 	}
 	
