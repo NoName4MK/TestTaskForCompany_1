@@ -6,52 +6,57 @@
 				<input type="button" value="Найти" @click="searchValue=inputSearchValue">
 				<input type="button"  value="Очистить" @click="searchValue=null">
 			</div>
-			<table >
-				<tr>
-					<th  v-for="(value,name, index) in getArray[0]" :key="index">
-						<div @click="setSort(name)">
-							<span class="header-table"><p>{{name}}</p>
-								<i class="icons-display material-icons">swap_vert</i>
-								<span v-if="elSort.key==name">
-									<i v-if="elSort.value" class="material-icons"> arrow_circle_down</i>
-									<i v-else class="material-icons"> arrow_circle_up </i>
-								</span> 
-							</span>
+			<div v-if="getArray.length==0">
+				<span>По запросу "{{searchValue}}" нет данных.</span>
+			</div>
+			<div v-else>
+				<table >
+					<tr>
+						<th  v-for="(value,name, index) in getArray[0]" :key="index">
+							<div @click="setSort(name)">
+								<span class="header-table"><p>{{name}}</p>
+									<i class="icons-display material-icons">swap_vert</i>
+									<span v-if="elSort.key==name">
+										<i v-if="elSort.value" class="material-icons"> arrow_circle_down</i>
+										<i v-else class="material-icons"> arrow_circle_up </i>
+									</span> 
+								</span>
+								
+							</div>
 							
-						</div>
-						
-					</th>
-				</tr>
-				<tr v-for="(item, index) in getArray" :key="index">
-					<td v-for="(cols, index) in item" :key="index" @click="$emit('emit-table',item) ">
-						<span>{{cols}}</span>
-					</td>
-				</tr>
-			</table>
-			<div v-if="totalPagePagin!=1">
-				<div v-if="totalPagePagin<7">
-					<input v-for="(value,index) in totalPagePagin" :key="index" type="button" :name="value" :value="value" @click="pagePagin=value" :class="[value==pagePagin? 'activeButton': 'Button']"> 			
-				</div>
-				<div v-else>
-					<div v-if="totalPagePagin-pagePagin>totalPagePagin-6">
-						<input v-for="(value,index) in 6" :key="index" type="button" :name="value" :value="value" @click="pagePagin=value"  :class="[value==pagePagin? 'activeButton': 'Button']"> 
-						<span>...</span>
-						<input type="button" :name="totalPagePagin" :value="totalPagePagin" @click="pagePagin=totalPagePagin"  class="Button"> 
-					</div>
-					
-					<div v-else-if="totalPagePagin-pagePagin<totalPagePagin-10">
-						<input type="button" :name="1" :value="1" @click="pagePagin=1"  class="Button"> 
-						<span>...</span>
-						<input v-for="(value,index) in 6" :key="index" type="button" :name="totalPagePagin-6+value" :value="totalPagePagin-6+value"	
-						@click="pagePagin=totalPagePagin-6+value" :class="[totalPagePagin-6+value==pagePagin? 'activeButton': 'Button']"> 	
+						</th>
+					</tr>
+					<tr v-for="(item, index) in getArray" :key="index">
+						<td v-for="(cols, index) in item" :key="index" @click="$emit('emit-table',item) ">
+							<span>{{cols}}</span>
+						</td>
+					</tr>
+				</table>
+				<div v-if="totalPagePagin!=1">
+					<div v-if="totalPagePagin<7">
+						<input v-for="(value,index) in totalPagePagin" :key="index" type="button" :name="value" :value="value" @click="pagePagin=value" :class="[value==pagePagin? 'activeButton': 'Button']"> 			
 					</div>
 					<div v-else>
-						<input  type="button" :name="1" :value="1" @click="pagePagin=1" class="Button"> 
-						<span>...</span>
-						<input v-for="(value,index) in 3" :key="index" type="button" :name="pagePagin-2+value" :value="pagePagin-2+value" @click="pagePagin=pagePagin-2+value" :class="[pagePagin-2+value==pagePagin? 'activeButton': 'Button']"> 	
-						<span>...</span>
-						<input  type="button" :name="totalPagePagin" :value="totalPagePagin" @click="pagePagin=totalPagePagin" class="Button"> 
+						<div v-if="totalPagePagin-pagePagin>totalPagePagin-6">
+							<input v-for="(value,index) in 6" :key="index" type="button" :name="value" :value="value" @click="pagePagin=value"  :class="[value==pagePagin? 'activeButton': 'Button']"> 
+							<span>...</span>
+							<input type="button" :name="totalPagePagin" :value="totalPagePagin" @click="pagePagin=totalPagePagin"  class="Button"> 
+						</div>
+						
+						<div v-else-if="totalPagePagin-pagePagin<totalPagePagin-10">
+							<input type="button" :name="1" :value="1" @click="pagePagin=1"  class="Button"> 
+							<span>...</span>
+							<input v-for="(value,index) in 6" :key="index" type="button" :name="totalPagePagin-6+value" :value="totalPagePagin-6+value"	
+							@click="pagePagin=totalPagePagin-6+value" :class="[totalPagePagin-6+value==pagePagin? 'activeButton': 'Button']"> 	
+						</div>
+						<div v-else>
+							<input  type="button" :name="1" :value="1" @click="pagePagin=1" class="Button"> 
+							<span>...</span>
+							<input v-for="(value,index) in 3" :key="index" type="button" :name="pagePagin-2+value" :value="pagePagin-2+value" @click="pagePagin=pagePagin-2+value" :class="[pagePagin-2+value==pagePagin? 'activeButton': 'Button']"> 	
+							<span>...</span>
+							<input  type="button" :name="totalPagePagin" :value="totalPagePagin" @click="pagePagin=totalPagePagin" class="Button"> 
 
+						</div>
 					</div>
 				</div>
 			</div>
@@ -69,12 +74,11 @@ export default {
 		return {
 
 			elSort:{
-				key:null,
-				value:null
+				key:String(),
+				value:Boolean(),
 			},
-			searchValue:null,
-			inputSearchValue: null,
-			selectElement:null,
+			searchValue:String(),
+			inputSearchValue: String(),
 
 			countCoolsForPage: 50,
 			pagePagin: 1,
@@ -86,7 +90,7 @@ export default {
 	
 			let array = this.arrayData;
 			if(this.searchValue){
-				array = array.filter(item => Object.values(item).find(item => item==this.searchValue));				
+				array = array.filter(item => Object.values(item).find(item => item==this.searchValue));			
 			}
 
 			this.setPagination(array.length);
@@ -128,15 +132,20 @@ export default {
 
 
 </script>
+<style lang="scss" scoped>
 
-<style scoped>
 .activeButton {
 	background-color: coral;
 }
-.header-table .icons-display{ 
-	display: none;
-}
-.header-table:hover .icons-display{
-	display: block;
+
+.header-table{
+	.icons-display{ 
+		display: none;
+	}
+	&:hover{
+		 .icons-display{
+			display: block;
+		}
+	}
 }
 </style>

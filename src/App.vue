@@ -35,12 +35,12 @@ export default {
 	},
 	data(){
 		return {
-				isLoadDate:false,
-				isLoadingDate:false,
-				isError:false,
-				isShowModal: false,
-				selectElement: null,				
-				arrayData:[],
+				isLoadDate:Boolean(),
+				isLoadingDate:Boolean(),
+				isError:Boolean(),
+				isShowModal: Boolean(),
+				selectElement: Object(),				
+				arrayData:Array,
 		}
 	},
 
