@@ -1,6 +1,6 @@
 <template>
-  <div id="app">
-    <div>
+  <div id="app" class="aplication">
+    <div class="header-aplication">
         <p>Тестовое задание</p>
     </div>
     <div>
@@ -9,7 +9,7 @@
 				<PageUser v-if="arraySortData.length!=0" :arrayData="arraySortData" @emit-table="itemForFiltrModal"/> 
 				<span v-else> Данных нет </span>
 			</div>
-			<div v-else> Данные загружаются </div>
+			<div v-else class="loader"> </div>
 
 		</div>
       	<div v-else-if="isError" > 
@@ -105,6 +105,46 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
+
+.aplication {
+	width: 100%;
+    min-width: 600px;
+	font-size: 1.1em;
+
+	.button {
+		border: none;
+		outline: none;
+		padding: 10px 16px;
+		background-color: #f1f1f1;
+		cursor: pointer;
+		font-size: 1.1em;
+
+		&:hover {
+			background-color: #ddd;
+		}
+
+		&.active {
+			background-color: #666;
+			color: white;
+		}
+	}
+}
+
+
+
+.loader {
+  border: 16px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 16px solid #3498db;
+  width: 120px;
+  height: 120px;
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
 
 </style>

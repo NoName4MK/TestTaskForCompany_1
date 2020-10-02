@@ -24,7 +24,14 @@
 <script>
 export default {
     name:'modalWindow',
-    props : ['selectElement'],
+    props: {
+        selectElement: {
+            type: Object,
+            default: null,
+            required: true,
+
+        }
+    },
     mounted() {
         document.addEventListener("keydown",this.escapeKeyListener);
     },
@@ -61,7 +68,8 @@ export default {
 
 .modal-container {
     width: 300px;
-    margin: 0px auto;
+    height: 300px;
+    margin: 0 auto;
     padding: 20px 30px;
     background-color: #fff;
     border-radius: 2px;

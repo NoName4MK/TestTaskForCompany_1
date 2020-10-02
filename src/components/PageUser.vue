@@ -1,62 +1,134 @@
 <template>
 	<section>
-		<div>
-			<div >
-				<input type="text"  placeholder="Строка для поиска" v-model="inputSearchValue">
-				<input type="button" value="Найти" @click="searchValue=inputSearchValue">
-				<input type="button"  value="Очистить" @click="searchValue=null">
+		<div class="container">
+			<div class="search">
+				<input 
+					type="text"  
+					class="search-input"
+					placeholder="Строка для поиска" 
+					v-model="inputSearchValue"
+				>
+				<button type="button" @click="searchValue=inputSearchValue" class="button">Найти</button>
+				<button	type="button" @click="searchValue=null" class="button">Очистить</button>
 			</div>
-			<div v-if="getArray.length!=0">
-				<table >
-					<tr>
-						<th  v-for="(value,name, index) in getArray[0]" :key="index">
-							<div @click="setSort(name)">
-								<span class="header-table"><p>{{name}}</p>
-									<i class="icons-display material-icons">swap_vert</i>
-									<span v-if="elSort.key==name">
-										<i v-if="elSort.value" class="material-icons"> arrow_circle_down</i>
-										<i v-else class="material-icons"> arrow_circle_up </i>
-									</span> 
-								</span>
-								
-							</div>
-							
+
+			<div v-if="getArray.length!=0" class="table">
+				<table class="table">
+					<tr class="header-table">
+						<th v-for="(value,name, index) in getArray[0]" :key="index">
+							<div class="header" @click="setSort(name)">
+								<span class="header-name"><p>{{String(name).toUpperCase()}}</p></span>
+								<span class="header-icons">
+									<i class="icons-swap material-icons">swap_vert</i>
+									<template v-if="elSort.key==name">
+										<i v-if="elSort.value" class="icons-arrow material-icons"> arrow_circle_down</i>
+										<i v-else class="icons-arrow material-icons"> arrow_circle_up </i>
+									</template> 
+								</span>								
+							</div>							
 						</th>
 					</tr>
-					<tr v-for="(item, index) in getArray" :key="index">
-						<td v-for="(cols, index) in item" :key="index" @click="$emit('emit-table',item) ">
+
+					<tr class="item" v-for="(item, index) in getArray" :key="index">
+						<td 
+							v-for="(cols, index) in item" 
+							:key="index" 
+							@click="$emit('emit-table',item)"
+						>
 							<span>{{cols}}</span>
 						</td>
 					</tr>
 				</table>
-				<div v-if="totalPagePagin!=1">
+
+				<div v-if="totalPagePagin!=1" class="pagination">
 					<div v-if="totalPagePagin<7">
-						<input v-for="(value,index) in totalPagePagin" :key="index" type="button" :name="value" :value="value" @click="pagePagin=value" :class="[value==pagePagin? 'activeButton': 'Button']"> 			
+						<button
+							type="button" 
+							v-for="(value,index) in totalPagePagin" 
+							:key="index" 
+							:name="value"  
+							@click="pagePagin=value" 
+							class="button"
+							:class="[value==pagePagin? 'active': '']"
+						>{{value}}
+						</button>
 					</div>
+
 					<div v-else>
 						<div v-if="totalPagePagin-pagePagin>totalPagePagin-6">
-							<input v-for="(value,index) in 6" :key="index" type="button" :name="value" :value="value" @click="pagePagin=value"  :class="[value==pagePagin? 'activeButton': 'Button']"> 
+							<button 
+								type="button" 
+								v-for="(value,index) in 6" 
+								:key="index" 
+								:name="value" 
+								class="button"
+								@click="pagePagin=value"  
+								:class="[value==pagePagin? 'active': '']"
+							> {{value}} 
+							</button>
 							<span>...</span>
-							<input type="button" :name="totalPagePagin" :value="totalPagePagin" @click="pagePagin=totalPagePagin"  class="Button"> 
-						</div>
-						
-						<div v-else-if="totalPagePagin-pagePagin<totalPagePagin-10">
-							<input type="button" :name="1" :value="1" @click="pagePagin=1"  class="Button"> 
-							<span>...</span>
-							<input v-for="(value,index) in 6" :key="index" type="button" :name="totalPagePagin-6+value" :value="totalPagePagin-6+value"	
-							@click="pagePagin=totalPagePagin-6+value" :class="[totalPagePagin-6+value==pagePagin? 'activeButton': 'Button']"> 	
-						</div>
-						<div v-else>
-							<input  type="button" :name="1" :value="1" @click="pagePagin=1" class="Button"> 
-							<span>...</span>
-							<input v-for="(value,index) in 3" :key="index" type="button" :name="pagePagin-2+value" :value="pagePagin-2+value" @click="pagePagin=pagePagin-2+value" :class="[pagePagin-2+value==pagePagin? 'activeButton': 'Button']"> 	
-							<span>...</span>
-							<input  type="button" :name="totalPagePagin" :value="totalPagePagin" @click="pagePagin=totalPagePagin" class="Button"> 
+							<button 
+								type="button" 
+								:name="totalPagePagin" 
+								
+								@click="pagePagin=totalPagePagin"  
+								class="button"
+							>{{totalPagePagin}}
+							</button>
+						</div>						
 
+						<div v-else-if="totalPagePagin-pagePagin<totalPagePagin-10">
+							<button 
+								type="button" 
+								:name="1" 
+								@click="pagePagin=1"  
+								class="button"
+							> 1 </button>
+							<span>...</span>
+							<button 
+								type="button" 
+								v-for="(value,index) in 6" 
+								:key="index" 
+								:name="totalPagePagin-6+value" 
+								@click="pagePagin=totalPagePagin-6+value" 								
+								class="button"
+								:class="[totalPagePagin-6+value==pagePagin? 'active': '']"
+							> {{totalPagePagin-6+value}}
+							</button>
+						</div>
+
+						<div v-else>
+							<input  
+								type="button" 
+								:name="1" 
+								:value="1" 
+								@click="pagePagin=1" 
+								class="button"
+							> 
+							<span>...</span>
+							<input 
+								type="button" 
+								v-for="(value,index) in 3" 
+								:key="index" 
+								:name="pagePagin-2+value" 
+								:value="pagePagin-2+value" 
+								@click="pagePagin=pagePagin-2+value" 
+								class="button"
+								:class="[pagePagin-2+value==pagePagin? 'active': '']"
+							> 	
+							<span>...</span>
+							<input  
+								type="button" 
+								:name="totalPagePagin" 
+								:value="totalPagePagin" 
+								@click="pagePagin=totalPagePagin" 
+								class="button"
+							> 
 						</div>
 					</div>
 				</div>
 			</div>
+
 			<div v-else>
 				<span>По запросу "{{searchValue}}" нет данных.</span>
 			</div>
@@ -69,10 +141,15 @@
 
 export default {
 	name: 'PageUser',
-	props:['arrayData'],
+	props:{
+		arrayData:{
+			type: Array,
+			required: true,
+			default:()=>[],
+		}
+	},
 	data(){
 		return {
-
 			elSort:{
 				key:String(),
 				value:Boolean(),
@@ -140,19 +217,76 @@ export default {
 
 </script>
 <style lang="scss" scoped>
-
-.activeButton {
-	background-color: coral;
+.search {
+	margin: 0.5em;
+	padding: 0.5em;
+	.search-input {
+		font-size: 1em;
+		padding: 10px 20px 9px 40px;
+		border: 1px solid #ddd;
+	}
 }
 
-.header-table{
-	.icons-display{ 
-		display: none;
+
+.table, td, th {  
+	border: 1px solid #ddd;
+	text-align: left;
+}
+
+.table {
+	border-collapse: collapse;
+	width: 100%;
+
+	th {
+		min-width: 5em;
 	}
-	&:hover{
-		 .icons-display{
-			display: block;
+
+  	th, td {
+		padding: 0.5em;
+	}
+	tr.header-table, tr.item:hover{
+		background-color: #f1f1f1;
+	}
+
+	.header-table{
+		.header{
+			display: flex;
+			text-align: center;
+			margin: 0 auto;
+
+			.header-name{
+				min-width: 70%;
+			}
+
+			.header-icons{
+				display: flex;
+
+				.icons-swap{
+					margin: auto;
+				}
+				.icons-arrow{
+					margin: auto;
+				}
+			}
+
+			.icons-swap{
+				display: none;
+			}
+
+			&:hover{
+				.icons-swap{
+					display: block;
+				}
+			}
+
 		}
 	}
 }
+
+
+.pagination{
+	width: 100%;
+	text-align: center;
+}
+
 </style>
